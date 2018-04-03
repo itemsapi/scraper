@@ -1,0 +1,27 @@
+{
+  "name": "scraper",
+  "version": "0.0.1",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/itemsapi/scraper",
+  "keywords": [
+  ],
+  "author": "Mateusz Rzepa",
+  "devDependencies": {
+    "bower": "^1.8.4",
+    "electron": "~1.8.2",
+    "mocha": "^3.4.2"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.2",
+    "json2csv": "^3.11.0",
+    "lodash": "^4.17.5",
+    "puppeteer": "^1.1.1"
+  }
+}

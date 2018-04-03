@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Scraping tool!</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.36.0/codemirror.css">
+
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
+
+
+    <script src="http://localhost:3007/assets/custom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.36.0/codemirror.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.36.0/mode/javascript/javascript.min.js"></script>
+  </head>
+  <body>
+
+  <div class="container">
+      <div class="row">
+          <div class="col-sm-12 col-md-12">
+
+              <h1>Scraper</h1>
+              <!-- All of the Node.js APIs are available in this renderer process. -->
+              We are using Node.js <script>document.write(process.versions.node)</script>,
+              Chromium <script>document.write(process.versions.chrome)</script>,
+              and Electron <script>document.write(process.versions.electron)</script>.
+
+              <br />
+              <br />
+
+              <form action="http://localhost:3007/scraping" method="POST">
+                  <div class="form-group">
+                      <label>List of URL's or JS functions</label>
+                      <textarea class="form-control" rows="3" name="urls"></textarea>
+                  </div>
+                  <div class="form-group">
+                      <label>Parse function</label>
+                      <textarea id="codemirror" class="form-control" rows="3" name="function"></textarea>
+                  </div>
+                  <div class="form-group">
+                      <label>Delay</label>
+                      <input type="text" class="form-control" name="delay" placeholder="delay in ms" value="">
+                  </div>
+                  <div class="form-group">
+                      <label>Time for login</label>
+                      <input type="text" class="form-control" name="login_time" placeholder="time for login" value="">
+                  </div>
+                  <button type="submit" class="btn btn-default scrap">Submit</button>
+                  <!--<button type="submit" class="btn btn-default scrap">Test</button>-->
+              </form>
+          </div>
+      </div>
+  </div>
+
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+
+    <script>
+
+    function betterTab(cm) {
+      if (cm.somethingSelected()) {
+        cm.indentSelection("add");
+      } else {
+        cm.replaceSelection(cm.getOption("indentWithTabs")? "\t":
+          Array(cm.getOption("indentUnit") + 1).join(" "), "end", "+input");
+      }
+    }
+
+    $(function() {
+      var codemirror = CodeMirror.fromTextArea(document.getElementById('codemirror'), {
+        lineNumbers: true,
+        extraKeys: { Tab: betterTab },
+        height: '300px',
+        //mode: "text/html",
+        matchBrackets: true
+      });
+    });
+    </script>
+
+  </body>
+</html>
