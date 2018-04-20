@@ -12,7 +12,7 @@ const api = express()
 const service = require('./service');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3007;
 const json2csv = require('json2csv');
 
 api.use('/assets', express.static('assets'));
@@ -24,6 +24,8 @@ api.get('/', (req, res) => res.send('Hello World!'))
 
 api.all('/scraping', async (req, res) => {
 
+  //console.log(req.body);
+
   var urls = _.chain(req.body.urls).split('\n').map(v => {
     return v.replace('\r', '');
   }).value();
@@ -34,12 +36,17 @@ api.all('/scraping', async (req, res) => {
   } catch (x) {
   }
 
-  var result = await service.start({
+  var params = {
     urls: urls,
     delay: parseInt(req.body.delay) || 100,
+    user_agent: req.body.user_agent,
     login_time: parseInt(req.body.login_time) || 1000,
     page_function: page_function
-  });
+  }
+
+  console.log(params);
+
+  var result = await service.start(params);
 
   console.log(result);
   //var datestring = momentdate.format('DD-MM-YY_HH-mm');
@@ -67,7 +74,7 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1200, height: 800})
+  mainWindow = new BrowserWindow({width: 1200, height: 900})
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({

@@ -10,12 +10,23 @@ const defaultCheerioOptions = {
 
 module.exports.start = async function(data) {
 
-  var browser = await puppeteer.launch({
+  var params = {
     headless: false,
     ignoreHTTPSErrors: true,
+    //args: ['--start-fullscreen'],
     //executablePath: '/home/cigolpl/Downloads/chrome-linux/chrome',
     userDataDir: './profiles',
-  });
+  }
+
+  if (process.env.EXECUTABLE_PATH) {
+    params.executablePath = process.env.EXECUTABLE_PATH;
+  }
+
+  if (process.env.PROFILE_PATH) {
+    params.userDataDir = process.env.PROFILE_PATH;
+  }
+
+  var browser = await puppeteer.launch(params);
 
   console.log(data);
 
@@ -23,12 +34,16 @@ module.exports.start = async function(data) {
   var page = pages[0];
 
   await page.setViewport({
-    width: 1920,
-    height: 1080
+    width: 1366,
+    height: 768
   });
 
-  var userAgent = data.user_agent || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
-  await page.setUserAgent(userAgent);
+  // Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36
+  var userAgent = data.user_agent || process.env.USER_AGENT;
+
+  if (userAgent) {
+    await page.setUserAgent(userAgent);
+  }
 
   var i = 1;
   var result = [];
